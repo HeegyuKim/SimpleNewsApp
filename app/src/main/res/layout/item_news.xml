@@ -22,7 +22,6 @@
             android:id="@+id/news_image"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintTop_toTopOf="parent"
     />
@@ -32,7 +31,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_favorite_border_black_24dp"
-            android:padding="4dp"
+            android:layout_marginRight="10dp"
 
             android:clickable="true"
             android:focusable="true"
@@ -40,6 +39,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/news_title"
             app:layout_constraintTop_toTopOf="@id/news_title"
+
     />
 
     <TextView
@@ -49,7 +49,10 @@
             android:textSize="11pt"
             android:textStyle="bold"
             android:textColor="@color/news_title"
-            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+
             tools:text="Hello World!"
 
             app:layout_constraintTop_toBottomOf="@id/news_image"
@@ -63,7 +66,7 @@
             android:layout_height="wrap_content"
             android:textSize="7pt"
             android:textColor="@color/news_content"
-            android:padding="5dp"
+            android:padding="10dp"
             tools:text="Hello World!Hello World!Hello World!Hello World!Hello World!Hello World!"
 
             app:layout_constraintTop_toBottomOf="@id/news_title"

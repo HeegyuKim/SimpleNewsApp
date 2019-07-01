@@ -52,6 +52,7 @@ class NewsAdapter(
             .apply(RequestOptions()
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .placeholder(R.drawable.ic_image_black_24dp)
+                .centerInside()
             )
             .into(vh.imageView)
     }

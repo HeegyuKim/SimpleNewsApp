@@ -17,7 +17,6 @@ class LastItemScrollListener(val proxy: Proxy)
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
         val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
 
-        Log.d(TAG, "$lastVisiblePosition >= ${proxy.getItemCount()}")
         if(lastVisiblePosition >= proxy.getItemCount() - 1) {
             proxy.notifyLastItemShown()
         }

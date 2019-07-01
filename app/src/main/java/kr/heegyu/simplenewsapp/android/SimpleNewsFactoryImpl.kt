@@ -1,5 +1,6 @@
 package kr.heegyu.simplenewsapp.android
 
+import kr.heegyu.simplenewsapp.BuildConfig
 import kr.heegyu.simplenewsapp.android.repo.NewsRepositoryImpl
 import kr.heegyu.simplenewsapp.android.retrofit.NewsAPI
 import kr.heegyu.simplenewsapp.app.SimpleNewsAppFactory
@@ -17,7 +18,7 @@ class SimpleNewsFactoryImpl
 
     companion object {
         private val NEWS_API_URL = "https://newsapi.org/v2/"
-        private val NEWS_API_KEY = "f6050dc663ab45b4b5b1bf2945fbf688"
+        private val NEWS_API_KEY = BuildConfig.NEWS_API_KEY
     }
 
 

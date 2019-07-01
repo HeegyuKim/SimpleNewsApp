@@ -6,7 +6,6 @@ import kr.heegyu.simplenewsapp.app.entity.News
 interface NewsRepository : Repository {
 
     fun search(query: String,
-            category: String,
             page: Int,
             pageSize: Int = 20
             ): List<News>

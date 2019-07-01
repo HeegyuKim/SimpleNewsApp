@@ -16,17 +16,23 @@ import kr.heegyu.simplenewsapp.android.ui.common.NewsAdapter
 import kr.heegyu.simplenewsapp.app.entity.News
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import java.util.concurrent.TimeUnit
-import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.LinearLayout
+import android.util.Log
 import kr.heegyu.simplenewsapp.android.ui.common.LastItemScrollListener
+import kr.heegyu.simplenewsapp.android.ui.common.NewsAdapterProxyImpl
+import kr.heegyu.simplenewsapp.android.ui.favorite.FavoriteActivity
 import java.io.InterruptedIOException
 import java.lang.Exception
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
 
 
-class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAdapter.Proxy
+class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener
 , LastItemScrollListener.Proxy
 {
+    companion object {
+        private val TAG = "SearchActivity"
+    }
 
     val repository: NewsRepository by lazy {
         factory.createNewsRepository()
@@ -39,7 +45,7 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
     var searchJob: Disposable? = null
     var loadNextPageJob: Disposable? = null
 
-    val newsAdapter: NewsAdapter by lazy { NewsAdapter(this, glide) }
+    val newsAdapter: NewsAdapter by lazy { NewsAdapter(NewsAdapterProxyImpl(this, repository), glide) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +57,10 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
             it.addOnScrollListener(LastItemScrollListener(this))
         }
         edit_search.addTextChangedListener(this)
+        edit_search.setOnEditorActionListener { v, actionId, event ->
+            val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+        }
         btn_favorite.setOnClickListener(this)
     }
 
@@ -72,26 +82,11 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
     override fun onClick(v: View) {
         when(v.id) {
             R.id.btn_favorite -> {
-//                val intent = Intent(this, Favo)
-//                startActivity(intent)
+                val intent = Intent(this, FavoriteActivity::class.java)
+                startActivity(intent)
             }
         }
     }
-
-
-    override fun addFavorite(news: News) {
-        repository.addNews(news)
-    }
-
-    override fun removeFavorite(news: News) {
-        repository.deleteNews(news.url)
-    }
-
-    override fun notifyClicked(news: News) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(news.url))
-        startActivity(intent)
-    }
-
 
     override fun getItemCount() = newsAdapter.itemCount
     override fun notifyLastItemShown() {
@@ -107,7 +102,7 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
         val text = edit_search.text.toString()
         val job = Single.create<List<News>> { emitter ->
              try {
-                 val news = repository.search(text, "business", page + 1, pageSize)
+                 val news = repository.search(text, page + 1, pageSize)
                  emitter.onSuccess(news)
             }
              catch (e: InterruptedIOException) {}
@@ -122,6 +117,9 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
                 e?.printStackTrace()
                 news?.let {
                     isLastPage = news.isEmpty()
+                    if(isLastPage)
+                        Log.d(TAG, "No more items..")
+
                     val count = newsAdapter.newsList.size
                     newsAdapter.newsList.addAll(news)
                     newsAdapter.notifyItemRangeInserted(count, news.size)
@@ -137,6 +135,8 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
     fun search(text: String) {
         searchJob?.dispose()
         searchJob = null
+        loadNextPageJob?.dispose()
+        loadNextPageJob = null
 
         if(text.isEmpty()) {
             progress.visibility = View.GONE
@@ -147,7 +147,7 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener, NewsAd
 
         val job = Single.create<List<News>> { emitter ->
             try {
-                val news = repository.search(text, "business", 1, pageSize)
+                val news = repository.search(text, 1, pageSize)
                 emitter.onSuccess(news)
             }
             catch (e: InterruptedIOException) {}

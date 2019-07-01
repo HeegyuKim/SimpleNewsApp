@@ -12,11 +12,12 @@ class NewsRepositoryImpl(
     val newsAPI: NewsAPI
 ) : NewsRepository {
 
-    val country = "kr"
+    val country = "us"
+    val language = "en"
 
 
-    override fun search(query: String, category: String, page: Int, pageSize: Int): List<News> {
-        val response = newsAPI.getTopHeadlines(query, country, category, page, pageSize).execute()
+    override fun search(query: String, page: Int, pageSize: Int): List<News> {
+        val response = newsAPI.getEverything(query, language, page, pageSize).execute()
         return if(response.isSuccessful) {
             response.body()?.articles?.map {
                 News(
@@ -65,7 +66,7 @@ class NewsRepositoryImpl(
             .findAll()
             .map { it.toNews() }
         realm.close()
-        return favorites
+        return favorites.reversed()
     }
 
     override fun isFavorites(url: String): Boolean {

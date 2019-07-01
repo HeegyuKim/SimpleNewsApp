@@ -15,7 +15,9 @@ interface NewsRepository : Repository {
 
     fun updateNews(news: News)
 
-    fun deleteNews(id: String)
+    fun deleteNews(url: String)
 
     fun getFavorites(page: Int, pageSize: Int = 20): List<News>
+
+    fun isFavorites(url: String): Boolean
 }

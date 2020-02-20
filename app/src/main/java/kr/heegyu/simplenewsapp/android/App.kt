@@ -8,7 +8,14 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
 
         Realm.init(this)
+    }
+
+
+    companion object {
+        var instance: App? = null
+            protected set
     }
 }

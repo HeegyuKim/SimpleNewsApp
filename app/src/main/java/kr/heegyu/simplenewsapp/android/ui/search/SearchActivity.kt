@@ -12,14 +12,14 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
 import kr.heegyu.simplenewsapp.R
 import kr.heegyu.simplenewsapp.android.ui.common.BaseActivity
-import kr.heegyu.simplenewsapp.android.ui.common.NewsAdapter
+import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapter
 import kr.heegyu.simplenewsapp.app.entity.News
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import java.util.concurrent.TimeUnit
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import kr.heegyu.simplenewsapp.android.ui.common.LastItemScrollListener
-import kr.heegyu.simplenewsapp.android.ui.common.NewsAdapterProxyImpl
+import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapterProxyImpl
 import kr.heegyu.simplenewsapp.android.ui.favorite.FavoriteActivity
 import java.io.InterruptedIOException
 import java.lang.Exception
@@ -45,7 +45,11 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener
     var searchJob: Disposable? = null
     var loadNextPageJob: Disposable? = null
 
-    val newsAdapter: NewsAdapter by lazy { NewsAdapter(NewsAdapterProxyImpl(this, repository), glide) }
+    val newsAdapter: NewsAdapter by lazy {
+        NewsAdapter(
+            repository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

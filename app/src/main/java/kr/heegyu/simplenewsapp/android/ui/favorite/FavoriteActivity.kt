@@ -6,8 +6,8 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_search.*
 import kr.heegyu.simplenewsapp.R
 import kr.heegyu.simplenewsapp.android.ui.common.BaseActivity
-import kr.heegyu.simplenewsapp.android.ui.common.NewsAdapter
-import kr.heegyu.simplenewsapp.android.ui.common.NewsAdapterProxyImpl
+import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapter
+import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapterProxyImpl
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 
 class FavoriteActivity : BaseActivity() {
@@ -16,7 +16,11 @@ class FavoriteActivity : BaseActivity() {
     val repository: NewsRepository by lazy {
         factory.createNewsRepository()
     }
-    val newsAdapter: NewsAdapter by lazy { NewsAdapter(NewsAdapterProxyImpl(this, repository), glide) }
+    val newsAdapter: NewsAdapter by lazy {
+        NewsAdapter(
+            repository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

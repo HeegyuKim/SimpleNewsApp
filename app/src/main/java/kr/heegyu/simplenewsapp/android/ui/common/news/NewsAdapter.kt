@@ -10,9 +10,11 @@ import kr.heegyu.simplenewsapp.android.ui.common.binding.BindingViewHolder
 import kr.heegyu.simplenewsapp.app.entity.News
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import kr.heegyu.simplenewsapp.databinding.ItemNewsBinding
+import javax.inject.Inject
 
 
-class NewsAdapter(
+class NewsAdapter
+@Inject constructor (
     val repo: NewsRepository
 )
     : RecyclerView.Adapter<BindingViewHolder<ItemNewsBinding>>()

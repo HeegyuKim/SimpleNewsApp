@@ -6,11 +6,14 @@ import kr.heegyu.simplenewsapp.android.retrofit.NewsAPI
 import kr.heegyu.simplenewsapp.app.entity.News
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import java.util.*
+import javax.inject.Inject
 
 
-class NewsRepositoryImpl(
+class NewsRepositoryImpl
+@Inject constructor(
     val newsAPI: NewsAPI
-) : NewsRepository {
+) : NewsRepository
+{
 
     val country = "us"
     val language = "en"

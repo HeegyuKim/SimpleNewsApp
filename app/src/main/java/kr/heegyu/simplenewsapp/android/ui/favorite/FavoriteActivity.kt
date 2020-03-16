@@ -9,18 +9,13 @@ import kr.heegyu.simplenewsapp.android.ui.common.BaseActivity
 import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapter
 import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapterProxyImpl
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
+import javax.inject.Inject
 
 class FavoriteActivity : BaseActivity() {
 
-
-    val repository: NewsRepository by lazy {
-        factory.createNewsRepository()
-    }
-    val newsAdapter: NewsAdapter by lazy {
-        NewsAdapter(
-            repository
-        )
-    }
+    @Inject
+    lateinit var repository: NewsRepository
+    @Inject lateinit var newsAdapter: NewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

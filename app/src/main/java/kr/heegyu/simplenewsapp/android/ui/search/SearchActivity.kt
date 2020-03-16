@@ -25,6 +25,7 @@ import java.io.InterruptedIOException
 import java.lang.Exception
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
+import javax.inject.Inject
 
 
 class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener
@@ -34,9 +35,8 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener
         private val TAG = "SearchActivity"
     }
 
-    val repository: NewsRepository by lazy {
-        factory.createNewsRepository()
-    }
+    @Inject lateinit var repository: NewsRepository
+    @Inject lateinit var newsAdapter: NewsAdapter
 
     var page = 0
     var pageSize = 20
@@ -45,11 +45,6 @@ class SearchActivity : BaseActivity(), TextWatcher, View.OnClickListener
     var searchJob: Disposable? = null
     var loadNextPageJob: Disposable? = null
 
-    val newsAdapter: NewsAdapter by lazy {
-        NewsAdapter(
-            repository
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

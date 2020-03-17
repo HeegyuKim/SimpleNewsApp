@@ -1,5 +1,6 @@
 package kr.heegyu.simplenewsapp.android.repo
 
+import android.util.Log
 import io.realm.Realm
 import kr.heegyu.simplenewsapp.android.realm.NewsModel
 import kr.heegyu.simplenewsapp.android.retrofit.NewsAPI
@@ -42,6 +43,8 @@ class NewsRepositoryImpl
             realm.insertOrUpdate(NewsModel(news))
         }
         realm.close()
+
+        Log.d(TAG, "addNews($news)")
     }
 
     override fun updateNews(news: News) {
@@ -50,6 +53,7 @@ class NewsRepositoryImpl
             realm.insertOrUpdate(NewsModel(news))
         }
         realm.close()
+        Log.d(TAG, "updateNews($news)")
     }
 
     override fun deleteNews(url: String) {
@@ -61,6 +65,7 @@ class NewsRepositoryImpl
                 .deleteAllFromRealm()
         }
         realm.close()
+        Log.d(TAG, "deleteNews($url)")
     }
 
     override fun getFavorites(page: Int, pageSize: Int): List<News> {
@@ -83,5 +88,10 @@ class NewsRepositoryImpl
 
     override fun close() {
 
+    }
+
+
+    companion object {
+        val TAG = "NewsRepositoryImpl"
     }
 }

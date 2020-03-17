@@ -1,15 +1,22 @@
 package kr.heegyu.simplenewsapp.android.ui.common
 
+import android.databinding.DataBindingUtil
+import android.databinding.ViewDataBinding
 import android.os.Bundle
+import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import dagger.android.AndroidInjection
+import kr.heegyu.simplenewsapp.BR
 import kr.heegyu.simplenewsapp.android.SimpleNewsFactoryImpl
+import kr.heegyu.simplenewsapp.android.ui.common.viewmodel.BaseViewModel
 import kr.heegyu.simplenewsapp.app.SimpleNewsAppFactory
 
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity
+<T : ViewDataBinding, VM: BaseViewModel>
+    : AppCompatActivity() {
 
     protected val glide: RequestManager by lazy {
         Glide.with(this)
@@ -18,9 +25,18 @@ open class BaseActivity : AppCompatActivity() {
 //        SimpleNewsFactoryImpl()
 //    }
 
+    abstract val layoutId: Int
+
+    abstract val viewModel: VM
+
+    protected val dataBinding: T by lazy {
+        DataBindingUtil.setContentView<T>(this, layoutId)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        dataBinding.setVariable(BR.vm, viewModel)
     }
 
     override fun onStart() {
@@ -35,5 +51,6 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.onDestroy()
     }
 }

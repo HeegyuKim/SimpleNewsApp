@@ -1,9 +1,9 @@
 package kr.heegyu.simplenewsapp.android.ui.common.adapter
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import kr.heegyu.simplenewsapp.android.ui.common.viewholder.DataBindingViewHolder
@@ -12,7 +12,7 @@ import kr.heegyu.simplenewsapp.android.ui.common.viewholder.DataBindingViewHolde
 abstract class DataBindingAdapter <T : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 )
-    : RecyclerView.Adapter<DataBindingViewHolder<T>>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<DataBindingViewHolder<T>>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataBindingViewHolder<T> {

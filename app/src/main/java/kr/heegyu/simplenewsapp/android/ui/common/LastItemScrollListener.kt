@@ -1,11 +1,11 @@
 package kr.heegyu.simplenewsapp.android.ui.common
 
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 
 class LastItemScrollListener(val proxy: Proxy)
-    : RecyclerView.OnScrollListener() {
+    : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
 
     val TAG = "LastItemScrollListener"
     interface Proxy {
@@ -13,8 +13,8 @@ class LastItemScrollListener(val proxy: Proxy)
         fun notifyLastItemShown()
     }
 
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+    override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+        val layoutManager = recyclerView.layoutManager as androidx.recyclerview.widget.LinearLayoutManager
         val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
 
         if(lastVisiblePosition >= proxy.getItemCount() - 1) {
@@ -22,7 +22,7 @@ class LastItemScrollListener(val proxy: Proxy)
         }
     }
 
-    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+    override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
     }
 }

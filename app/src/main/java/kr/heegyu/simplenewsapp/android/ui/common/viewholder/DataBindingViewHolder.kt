@@ -1,15 +1,15 @@
 package kr.heegyu.simplenewsapp.android.ui.common.viewholder
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LifecycleRegistry
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 
 
 open class DataBindingViewHolder <T : ViewDataBinding> (
     val binding: T
-) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
     val lifecycleRegistry = LifecycleRegistry(this)
 

@@ -1,10 +1,10 @@
 package kr.heegyu.simplenewsapp.android.ui.search
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.content.Intent
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log

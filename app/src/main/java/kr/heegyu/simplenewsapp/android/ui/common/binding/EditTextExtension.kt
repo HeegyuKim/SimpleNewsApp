@@ -1,6 +1,6 @@
 package kr.heegyu.simplenewsapp.android.ui.common.binding
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.text.TextWatcher
 import android.widget.EditText
 

@@ -1,7 +1,7 @@
 package kr.heegyu.simplenewsapp.android.ui.common.news
 
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
 import android.util.Log
 import kr.heegyu.simplenewsapp.R
 import kr.heegyu.simplenewsapp.android.ui.common.adapter.DataBindingAdapter

@@ -16,14 +16,14 @@ import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapter
 import kr.heegyu.simplenewsapp.app.entity.News
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import java.util.concurrent.TimeUnit
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import kr.heegyu.simplenewsapp.android.ui.common.LastItemScrollListener
 import kr.heegyu.simplenewsapp.android.ui.favorite.FavoriteActivity
 import java.io.InterruptedIOException
 import java.lang.Exception
 import android.app.Activity
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.view.inputmethod.InputMethodManager
 import kr.heegyu.simplenewsapp.BR
 import kr.heegyu.simplenewsapp.databinding.ActivitySearchBinding

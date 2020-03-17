@@ -1,9 +1,9 @@
 package kr.heegyu.simplenewsapp.android.ui.common.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.databinding.BaseObservable
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.databinding.BaseObservable
 import android.os.Bundle
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

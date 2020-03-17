@@ -1,8 +1,8 @@
 package kr.heegyu.simplenewsapp.android.ui.favorite
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.MenuItem
 import dagger.android.AndroidInjection

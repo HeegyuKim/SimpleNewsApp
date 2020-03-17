@@ -1,7 +1,7 @@
 package kr.heegyu.simplenewsapp.android.ui.common.viewmodel
 
-import android.arch.lifecycle.ViewModel
-import android.databinding.BaseObservable
+import androidx.lifecycle.ViewModel
+import androidx.databinding.BaseObservable
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable

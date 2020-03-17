@@ -1,8 +1,8 @@
 package kr.heegyu.simplenewsapp.android.ui.common.news
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.content.Intent
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import android.net.Uri
 import kr.heegyu.simplenewsapp.BR
 import kr.heegyu.simplenewsapp.android.App

@@ -1,10 +1,10 @@
 package kr.heegyu.simplenewsapp.android.ui.common
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import dagger.android.AndroidInjection
 import kr.heegyu.simplenewsapp.BR
 import kr.heegyu.simplenewsapp.android.ui.common.viewmodel.BaseViewModel

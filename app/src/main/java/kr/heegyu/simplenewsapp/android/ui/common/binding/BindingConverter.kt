@@ -1,6 +1,6 @@
 package kr.heegyu.simplenewsapp.android.ui.common.binding
 
-import android.databinding.BindingConversion
+import androidx.databinding.BindingConversion
 import android.net.Uri
 
 

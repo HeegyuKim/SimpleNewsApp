@@ -4,12 +4,12 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.net.Uri"/>
         <variable
                 name="vm"
                 type="kr.heegyu.simplenewsapp.android.ui.common.news.NewsViewModel" />
     </data>
 <android.support.v7.widget.CardView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
@@ -26,15 +26,15 @@
         android:onClick="@{() -> vm.onNewsClick()}"
 >
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/news_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@mipmap/ic_launcher"
-            android:scaleType="centerCrop"
             app:imageUrl="@{vm.news.imageUrl}"
-            app:error="@{@drawable/ic_error_outline_black_24dp}"
-            app:placeholder="@{@drawable/ic_image_black_24dp}"
+            app:failureImage="@drawable/ic_error_outline_black_24dp"
+            app:placeholderImage="@drawable/ic_image_black_24dp"
+            app:actualImageScaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
     />
 

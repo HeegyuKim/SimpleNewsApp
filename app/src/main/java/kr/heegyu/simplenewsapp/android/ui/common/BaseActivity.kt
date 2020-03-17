@@ -5,8 +5,6 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import dagger.android.AndroidInjection
 import kr.heegyu.simplenewsapp.BR
 import kr.heegyu.simplenewsapp.android.ui.common.viewmodel.BaseViewModel
@@ -16,9 +14,9 @@ abstract class BaseActivity
 <T : ViewDataBinding, VM: BaseViewModel>
     : AppCompatActivity() {
 
-    protected val glide: RequestManager by lazy {
-        Glide.with(this)
-    }
+//    protected val glide: RequestManager by lazy {
+//        Glide.with(this)
+//    }
 //    protected val factory: SimpleNewsAppFactory by lazy {
 //        SimpleNewsFactoryImpl()
 //    }
@@ -40,7 +38,6 @@ abstract class BaseActivity
 
     override fun onStart() {
         super.onStart()
-        glide.onStart()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -50,7 +47,6 @@ abstract class BaseActivity
 
     override fun onStop() {
         super.onStop()
-        glide.onStop()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

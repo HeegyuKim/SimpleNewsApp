@@ -1,6 +1,7 @@
 package kr.heegyu.simplenewsapp.android
 
 import android.app.Application
+import com.facebook.drawee.backends.pipeline.Fresco
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -16,9 +17,10 @@ class App : Application()
     override fun onCreate() {
         super.onCreate()
         instance = this
-
+        Fresco.initialize(this)
         Realm.init(this)
         DaggerAppComponent.factory().create(this).inject(this)
+
     }
 
     @Inject

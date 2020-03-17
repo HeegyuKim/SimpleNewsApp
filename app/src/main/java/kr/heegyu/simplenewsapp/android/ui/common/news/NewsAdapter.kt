@@ -1,5 +1,8 @@
 package kr.heegyu.simplenewsapp.android.ui.common.news
 
+import android.databinding.ObservableArrayList
+import android.databinding.ObservableList
+import android.util.Log
 import kr.heegyu.simplenewsapp.R
 import kr.heegyu.simplenewsapp.android.ui.common.adapter.DataBindingAdapter
 import kr.heegyu.simplenewsapp.android.ui.common.viewholder.DataBindingViewHolder
@@ -14,9 +17,56 @@ class NewsAdapter
     val repo: NewsRepository
 )
     : DataBindingAdapter<ItemNewsBinding>(R.layout.item_news)
-//, View.OnClickListener
 {
-    val newsList = ArrayList<News>()
+    val newsList = ObservableArrayList<News>()
+
+    init {
+        val listChangedCallback = object: ObservableList.OnListChangedCallback<ObservableList<News>>() {
+            override fun onChanged(sender: ObservableList<News>?) {
+                notifyDataSetChanged()
+                Log.d(TAG, "obslist.onChanged()")
+            }
+
+            override fun onItemRangeRemoved(
+                sender: ObservableList<News>?,
+                positionStart: Int,
+                itemCount: Int
+            ) {
+                notifyItemRangeRemoved(positionStart, itemCount)
+                Log.d(TAG, "obslist.onItemRangeRemoved($positionStart, $itemCount)")
+            }
+
+            override fun onItemRangeMoved(
+                sender: ObservableList<News>?,
+                fromPosition: Int,
+                toPosition: Int,
+                itemCount: Int
+            ) {
+                for(i in 0 until itemCount)
+                    notifyItemMoved(fromPosition, toPosition + i)
+                Log.d(TAG, "obslist.onItemRangeMoved($fromPosition, $toPosition, $itemCount)")
+            }
+
+            override fun onItemRangeInserted(
+                sender: ObservableList<News>?,
+                positionStart: Int,
+                itemCount: Int
+            ) {
+                notifyItemRangeInserted(positionStart, itemCount)
+                Log.d(TAG, "obslist.onItemRangeInserted($positionStart, $itemCount)")
+            }
+
+            override fun onItemRangeChanged(
+                sender: ObservableList<News>?,
+                positionStart: Int,
+                itemCount: Int
+            ) {
+                notifyItemRangeChanged(positionStart, itemCount)
+                Log.d(TAG, "obslist.onItemRangeChanged($positionStart, $itemCount)")
+            }
+        }
+        newsList.addOnListChangedCallback(listChangedCallback)
+    }
 
     override fun getItemCount() = newsList.size
 
@@ -25,4 +75,8 @@ class NewsAdapter
         holder.binding.vm = NewsViewModel(repo, news)
     }
 
+
+    companion object {
+        val TAG = "NewsAdapter"
+    }
 }

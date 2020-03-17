@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,10 +17,12 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
 import kr.heegyu.simplenewsapp.R
+import kr.heegyu.simplenewsapp.android.mapper.toNews
 import kr.heegyu.simplenewsapp.android.ui.common.LastItemScrollListener
 import kr.heegyu.simplenewsapp.android.ui.common.news.NewsAdapter
 import kr.heegyu.simplenewsapp.android.ui.common.viewmodel.BaseViewModel
 import kr.heegyu.simplenewsapp.android.ui.favorite.FavoriteActivity
+import kr.heegyu.simplenewsapp.android.util.ListEvent
 import kr.heegyu.simplenewsapp.app.entity.News
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import java.io.InterruptedIOException
@@ -32,14 +35,16 @@ import javax.inject.Inject
 class SearchActivityViewModel @Inject constructor (
     val activity: SearchActivity,
     val repository: NewsRepository,
-    val newsAdapter: NewsAdapter
+    val newsAdapter: NewsAdapter,
+    val newsRelay: Relay<ListEvent<News>>
 )
     : BaseViewModel()
     , TextWatcher
     , LastItemScrollListener.Proxy
 
 {
-    var query = mutableLiveData("")
+    var query = ""
+    var searchDisposable: Disposable? = null
     var progress = mutableLiveData(false)
     var page = mutableLiveData(0)
     var pageSize = 20
@@ -49,6 +54,29 @@ class SearchActivityViewModel @Inject constructor (
     val lastItemScrollListener = LastItemScrollListener(this)
 
 
+    init {
+        newsRelay.observeOn(AndroidSchedulers.mainThread())
+            .subscribe { event ->
+                when(event) {
+                    is ListEvent.DeleteEvent -> {
+                        Log.d(TAG, "relay delete event")
+                        event.items.filter { it in newsAdapter.newsList }
+                            .forEach {
+                                val idx = newsAdapter.newsList.indexOf(it)
+                                it.isFavorite = false
+                                newsAdapter.newsList[idx] = it
+                                newsAdapter.notifyItemChanged(idx)
+                                Log.d(TAG, "relay change $idx $it")
+                            }
+                    }
+                }
+
+                newsAdapter.notifyDataSetChanged()
+                Log.d(TAG, "news relay event!")
+            }.register()
+        Log.d(TAG, "NewsRelay hash: ${newsRelay.hashCode()}")
+    }
+
 
     fun onFavoriteButtonClicked() {
         val intent = Intent(activity, FavoriteActivity::class.java)
@@ -56,9 +84,10 @@ class SearchActivityViewModel @Inject constructor (
     }
 
     override fun afterTextChanged(s: Editable?) {
-        val text = s?.toString() ?: return
-        search(text)
-        Log.d(TAG, "search($text)")
+        query = s?.toString() ?: return
+        page.value = 0
+        search(query)
+        Log.d(TAG, "search($query)")
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -66,79 +95,35 @@ class SearchActivityViewModel @Inject constructor (
 
     override fun getItemCount() = newsAdapter.itemCount
     override fun notifyLastItemShown() {
-        loadNextPage()
+        search(query)
     }
 
-    fun loadNextPage() {
-        clearTasks()
+    fun search(text: String) {
+        searchDisposable?.dispose()
 
-        val job = Single.create<List<News>> { emitter ->
-            try {
-                val news = repository.search(query.value ?: "", (page.value ?: -1) + 1, pageSize)
-                emitter.onSuccess(news)
-            }
-            catch (e: InterruptedIOException) {}
-            catch (e: Exception) {
-                emitter.onError(e)
-            }
-        }
+        page.value?.takeIf { it >= 1 }?.let { return }
 
-        job.subscribeOn(Schedulers.io())
+        searchDisposable = repository.search(query, (page.value ?: -1) + 1, pageSize)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { news, e ->
-                e?.printStackTrace()
-                news?.let {
+            .subscribe (
+                { res ->
+                    val news = res.articles.map { it.toNews(repository) }
+
+                    val count = newsAdapter.newsList.size
+                    if(page.value == 0)
+                        newsAdapter.newsList.clear()
+                    newsAdapter.newsList.addAll(news)
+
+                    page.value = (page.value ?: -1) + 1
                     isLastPage.value = news.isEmpty()
                     if(isLastPage.value == true)
                         Log.d(TAG, "No more items..")
-
-                    val count = newsAdapter.newsList.size
-                    newsAdapter.newsList.addAll(news)
-                    newsAdapter.notifyItemRangeInserted(count, news.size)
-
-                    page.value = (page.value ?: -1) + 1
+                },
+                {
+                    it.printStackTrace()
                 }
-            }
-            .register()
-    }
-
-
-    fun search(text: String) {
-        clearTasks()
-
-        progress.value = text.isNotEmpty()
-        if(progress.value != true)
-            return
-
-
-        val job = Single.create<List<News>> { emitter ->
-            try {
-                val news = repository.search(text, 1, pageSize)
-                emitter.onSuccess(news)
-            }
-            catch (e: InterruptedIOException) {}
-            catch (e: Exception) {
-                e.printStackTrace()
-                emitter.onSuccess(emptyList())
-            }
-        }
-
-        job.delay(2000, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { news, e ->
-                news?.let {
-                    newsAdapter.newsList.clear()
-                    newsAdapter.newsList.addAll(news)
-                    newsAdapter.notifyDataSetChanged()
-
-                    page.value = 1
-                }
-
-                e?.printStackTrace()
-                progress.value = false
-            }
-            .register()
+            )
     }
 
 

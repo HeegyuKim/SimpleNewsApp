@@ -12,4 +12,7 @@ data class News(
     var isFavorite: Boolean
 ) {
 
+    override fun equals(other: Any?): Boolean {
+        return if(other is News) other.url == url else false
+    }
 }

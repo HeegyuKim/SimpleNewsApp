@@ -1,5 +1,6 @@
 package kr.heegyu.simplenewsapp.android.retrofit
 
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.GET
@@ -15,7 +16,7 @@ interface NewsAPI {
         @Query("category") category: String,
         @Query("page") page: Int,
         @Query("pageSize")pageSize: Int
-    ): Call<NewsResponse>
+    ): Observable<NewsResponse>
 
     @GET("everything")
     fun getEverything(
@@ -23,6 +24,6 @@ interface NewsAPI {
         @Query("language") language: String,
         @Query("page") page: Int,
         @Query("pageSize")pageSize: Int
-    ): Call<NewsResponse>
+    ): Observable<NewsResponse>
 
 }

@@ -3,14 +3,24 @@ package kr.heegyu.simplenewsapp.android.ui.common.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.BaseObservable
+import android.os.Bundle
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.util.*
 
 
-open class BaseViewModel : ViewModel() {
+open class BaseViewModel : BaseObservable() {
 
-    val compositeDisposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
+    private val bundleDelegatesMap = TreeMap<String, DelegatedBundle<*>>()
 
+    // lifecycle methods
+    open fun onDestroy() {
+        clearTasks()
+    }
+
+    // live data, observable
     fun <T> mutableLiveData(value: T?): MutableLiveData<T> {
         val liveData = MutableLiveData<T>()
         liveData.value = value
@@ -22,11 +32,27 @@ open class BaseViewModel : ViewModel() {
         return this
     }
 
-    open fun onDestroy() {
-        clearTasks()
-    }
-
     fun clearTasks() {
         compositeDisposable.clear()
+    }
+
+
+    // bundle
+    protected fun <T> bundle(key: String, defaultValue: T): DelegatedBundle<T> {
+        val del = DelegatedBundle(key, defaultValue, this)
+        bundleDelegatesMap[key] = del
+        return del
+    }
+
+    fun restoreState(bundle: Bundle) {
+        bundleDelegatesMap.forEach { (k, v) ->
+            v.load(bundle)
+        }
+    }
+
+    fun saveState(bundle: Bundle) {
+        bundleDelegatesMap.forEach { (k, v) ->
+            v.save(bundle)
+        }
     }
 }

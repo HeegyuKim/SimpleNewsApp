@@ -8,9 +8,10 @@ NEWS_API_KEY=your_api_key
 ## 사용한 것들
 - Kotlin
 - Retrofit2
-- RxJava2, RxKotlin
-- Glide 4.8
+- RxJava2, RxKotlin, RxRelay
+- Fresco 2.0
 - Realm 5.8
+- Dagger2
 
 # Screenshots
 <div>

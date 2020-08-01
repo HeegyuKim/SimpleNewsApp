@@ -1,6 +1,6 @@
 package kr.heegyu.simplenewsapp.android.ui.common.news
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.item_news.view.*
 import kr.heegyu.simplenewsapp.databinding.ItemNewsBinding
@@ -8,7 +8,7 @@ import kr.heegyu.simplenewsapp.databinding.ItemNewsBinding
 
 class NewsViewHolder(
     val binding: ItemNewsBinding
-) : RecyclerView.ViewHolder(binding.root) {
+) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
 
 
 //    val layout = itemView.news_layout

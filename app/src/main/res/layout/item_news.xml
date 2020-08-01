@@ -4,19 +4,19 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.net.Uri"/>
         <variable
                 name="vm"
                 type="kr.heegyu.simplenewsapp.android.ui.common.news.NewsViewModel" />
     </data>
-<android.support.v7.widget.CardView
-
+<androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
         android:layout_margin="5dp"
 >
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/news_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,14 +26,15 @@
         android:onClick="@{() -> vm.onNewsClick()}"
 >
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/news_image"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
             android:src="@mipmap/ic_launcher"
             app:imageUrl="@{vm.news.imageUrl}"
-            app:error="@{@drawable/ic_error_outline_black_24dp}"
-            app:placeholder="@{@drawable/ic_image_black_24dp}"
+            app:failureImage="@drawable/ic_error_outline_black_24dp"
+            app:placeholderImage="@drawable/ic_image_black_24dp"
+            app:actualImageScaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
     />
 
@@ -60,7 +61,7 @@
             android:id="@+id/news_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="11pt"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/news_title"
             android:paddingLeft="10dp"
@@ -78,8 +79,10 @@
             android:id="@+id/news_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="7pt"
+            android:textSize="15dp"
             android:textColor="@color/news_content"
+            android:lines="2"
+            android:ellipsize="end"
             android:padding="10dp"
             android:text="@{vm.news.content}"
             tools:text="Hello World!Hello World!Hello World!Hello World!Hello World!Hello World!"
@@ -87,6 +90,6 @@
             app:layout_constraintTop_toBottomOf="@id/news_title"
     />
 
-</android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
 </layout>

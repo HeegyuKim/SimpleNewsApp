@@ -1,20 +1,18 @@
-package kr.heegyu.simplenewsapp.android
+package kr.heegyu.simplenewsapp.android.retrofit
 
 import kr.heegyu.simplenewsapp.BuildConfig
 import kr.heegyu.simplenewsapp.android.repo.NewsRepositoryImpl
-import kr.heegyu.simplenewsapp.android.retrofit.NewsAPI
-import kr.heegyu.simplenewsapp.app.SimpleNewsAppFactory
 import kr.heegyu.simplenewsapp.app.repo.NewsRepository
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class SimpleNewsFactoryImpl
-    : SimpleNewsAppFactory {
+class RetrofitProvider {
 
     companion object {
         private val NEWS_API_URL = "https://newsapi.org/v2/"
@@ -31,9 +29,7 @@ class SimpleNewsFactoryImpl
         }
     }
 
-    val retrofit: Retrofit
-
-    init {
+    fun provideRetrofit(): Retrofit {
         val logger = HttpLoggingInterceptor()
         logger.level = HttpLoggingInterceptor.Level.BODY
         val http = OkHttpClient.Builder()
@@ -41,19 +37,14 @@ class SimpleNewsFactoryImpl
             .addInterceptor(NewsAPIInterceptor())
             .build()
 
-        retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
             .baseUrl(NEWS_API_URL)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(http)
             .build()
-    }
-
-    override fun createNewsRepository(): NewsRepository {
-        val newsAPI = retrofit.create(NewsAPI::class.java)
-        return NewsRepositoryImpl(newsAPI)
-    }
-
-    override fun close() {
 
     }
+
+
 }

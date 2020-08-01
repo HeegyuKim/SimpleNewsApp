@@ -1,10 +1,15 @@
 package kr.heegyu.simplenewsapp.android.ui.common.binding
 
-import android.databinding.BindingAdapter
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 
 
-@BindingAdapter("adapter")
-fun setRecyclerAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+@BindingAdapter("adapter", "onScrollListener", requireAll = false)
+fun setRecyclerAdapter(
+    view: androidx.recyclerview.widget.RecyclerView,
+    adapter: androidx.recyclerview.widget.RecyclerView.Adapter<*>?,
+    onScrollListener: androidx.recyclerview.widget.RecyclerView.OnScrollListener?
+) {
     view.adapter = adapter
+    onScrollListener?.let(view::addOnScrollListener)
 }
